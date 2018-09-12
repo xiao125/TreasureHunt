@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Cinemachine;
+
 public class GameManager : MonoBehaviour
 {
 
@@ -98,37 +98,6 @@ public class GameManager : MonoBehaviour
         InitMap();
     }
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) //空格回到初始位置
-        {
-            ResetTarget();
-        }
-    }
-
-    private void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            player.transform.GetChild(0).transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, 
-                Screen.height / 2, 0)) + new Vector3(0, 0, 10);
-        }
-        if (Input.GetMouseButton(0))
-        {
-            player.transform.GetChild(0).transform.position -= new Vector3(Input.GetAxis("Mouse X") * 0.5f, 0, 0);
-        }
-    }
-
-
-    /// <summary>
-    /// 将虚拟摄像机的跟随目标与玩家的位置同步
-    /// </summary>
-    private void ResetTarget()
-    {
-        player.transform.GetChild(0).transform.localPosition = Vector3.zero;
-    }
-
     //创建关卡地图
     private void CreateMap()
     {
@@ -164,20 +133,8 @@ public class GameManager : MonoBehaviour
     /// 设置摄像机的参数与关卡地图匹配
     private void ResetCamera()
     {
-        CinemachineVirtualCamera vCam = GameObject.Find("VCam").GetComponent<CinemachineVirtualCamera>();
-        vCam.m_Lens.OrthographicSize = (h + 2) / 2f;
-        CinemachineFramingTransposer ft = vCam.GetCinemachineComponent(CinemachineCore.Stage.Body) as CinemachineFramingTransposer;
-        ft.m_DeadZoneHeight = (h * 100) / (300 + h * 100f);
-        ft.m_DeadZoneWidth = (h * 100) / (300 + h * 100f) / 9 * 16 / h;
-        GetComponent<PolygonCollider2D>().SetPath(0,
-            new Vector2[]
-            {
-                new Vector2(0,-2f),
-                new Vector2(0,h),
-                new Vector2(w,h),
-                new Vector2(w,-2f)
-            });
-
+        Camera.main.orthographicSize = (h + 3) / 2f; //设置摄像机Size大小
+        Camera.main.transform.position = new Vector3((w - 1) / 2f, (h - 1) / 2f, -10); //设置摄像机位置
     }
 
     /// <summary>
