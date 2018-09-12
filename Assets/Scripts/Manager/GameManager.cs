@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
         obstacleAreaNum = (w - (standAreaW + 3)) / obstacleAreaW;
     }
 
+
     private void Start()
     {
         CreateMap();
