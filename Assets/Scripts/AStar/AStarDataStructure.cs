@@ -18,7 +18,7 @@
 
 public class PointData
 {
-    private Point point;
+    public Point point; //自身节点
     public double g, h;
     public PointData parent; //父节点
 

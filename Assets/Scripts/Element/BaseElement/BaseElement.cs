@@ -45,7 +45,7 @@ public class BaseElement : MonoBehaviour {
     /// 当玩家左键点击当前元素时候执行的操作
     public virtual void OnLeftMouseButton()
     {
-        OnPlayerStand();
+        GameManager.Instance.FindPath(new Point(x, y));
         
     }
 

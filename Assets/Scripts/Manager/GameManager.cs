@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+using DG.Tweening;
 public class GameManager : MonoBehaviour
 {
 
@@ -62,6 +63,12 @@ public class GameManager : MonoBehaviour
 
     [Header("存放地图元素的数组")]
     public BaseElement[,] mapArray;
+    public Tweener pathTweener; //路径动画
+    [HideInInspector]
+    public bool pathFinding = false; //不再寻路
+
+
+
 
     [Header("图片资源")]
     public Sprite[] coverTileSprites;
@@ -851,6 +858,38 @@ public class GameManager : MonoBehaviour
             availableIndex.Remove(GetIndex(wx, wy));
             SetElement(GetIndex(wx, wy), Random.value < 0.5f ? ElementContent.SmallWall : ElementContent.BigWall);
         }
+    }
+
+
+    /// <summary>
+    /// 寻路方法
+    /// </summary>
+    /// <param name="e">寻路终点</param>
+    public void FindPath(Point e)
+    {
+        if (pathFinding == true) pathTweener.Kill(); //关闭寻路动画
+        Point s = new Point((int)player.transform.position.x, (int)player.transform.position.y);
+        List<Point> pathList = new List<Point>();
+        if (AStarPathfinding.FindPath(s, e, pathList) == false)
+        {
+            //ani.SetTrigger("Why");
+            //AudioManager.Instance.PlayClip(AudioManager.Instance.why);
+            return;
+        }
+        ResetTarget();
+        pathFinding = true;
+        //AudioManager.Instance.PlayClip(AudioManager.Instance.move);
+        //ani.SetBool("Idle", !pathFinding);
+        pathTweener = player.transform.DOPath(pathList.ToVector3Array(), pathList.Count * 0.1f); //走动效果 0.1秒执行一次动画
+        pathTweener.SetEase(Ease.Linear); //设置运动曲线（线性）
+        pathTweener.onComplete += () => { //动画完成后回调方法
+            pathFinding = false;
+           // ani.SetBool("Idle", !pathFinding);
+        };
+        pathTweener.onKill += () => {  //关闭动画回调
+            pathFinding = false;
+            //ani.SetBool("Idle", !pathFinding);
+        };
     }
 
 }
