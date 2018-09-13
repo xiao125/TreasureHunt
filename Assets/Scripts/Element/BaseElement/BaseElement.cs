@@ -22,7 +22,7 @@ public class BaseElement : MonoBehaviour {
     {
         ////当鼠标移动到物体上 2：鼠标中建
         // Input.GetMouseButtonUp() : 当移动到物体上再移出时，不触发
-        if (Input.GetMouseButtonUp(2))
+        if (Input.GetMouseButtonUp(2) && elementState == ElementState.Uncovered)
         {
             OnMiddleMouseButton();
         }

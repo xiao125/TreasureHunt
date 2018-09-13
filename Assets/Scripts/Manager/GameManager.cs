@@ -867,6 +867,7 @@ public class GameManager : MonoBehaviour
     /// <param name="e">寻路终点</param>
     public void FindPath(Point e)
     {
+        Debug.Log("sssss");
         if (pathFinding == true) pathTweener.Kill(); //关闭寻路动画
         Point s = new Point((int)player.transform.position.x, (int)player.transform.position.y);
         List<Point> pathList = new List<Point>();
